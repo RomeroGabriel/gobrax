@@ -14,7 +14,6 @@ type TruckDriver struct {
 }
 
 var (
-	ErrIDIsRequired            = errors.New("id is required")
 	ErrNameIsRequired          = errors.New("name is required")
 	ErrEmailIsRequired         = errors.New("email is required")
 	ErrLicenseNumberIsRequired = errors.New("license number is required")
@@ -39,7 +38,7 @@ func NewTruckDriver(name, email, licenseNumber string) (*TruckDriver, error) {
 
 func (t TruckDriver) Validate() error {
 	if t.ID.String() == "" {
-		return ErrIDIsRequired
+		return entity.ErrIDIsRequired
 	}
 	if t.Name == "" {
 		return ErrNameIsRequired
