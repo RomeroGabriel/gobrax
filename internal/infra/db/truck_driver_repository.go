@@ -11,7 +11,7 @@ type TruckDriverRepository struct {
 	Db *sqlx.DB
 }
 
-var schema = `CREATE TABLE IF NOT EXISTS TruckDriver (
+var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS TruckDriver (
     id TEXT NOT NULL,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
@@ -24,9 +24,9 @@ func NewTruckDriverRepository(db *sqlx.DB) *TruckDriverRepository {
 		log.Printf("%q\n", err)
 		return nil
 	}
-	_, err = db.Exec(schema)
+	_, err = db.Exec(schemaTruckDriver)
 	if err != nil {
-		log.Printf("%q: %s\n", err, schema)
+		log.Printf("%q: %s\n", err, schemaTruckDriver)
 		return nil
 	}
 	return &TruckDriverRepository{db}
