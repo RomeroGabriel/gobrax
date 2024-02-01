@@ -1,0 +1,8 @@
+POST http://localhost:8080/truckdrivers HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Truck Driver 1",
+  "email": "ggg@g.com",
+  "license_number": "ABC1234556"
+}
