@@ -69,3 +69,38 @@ func (h *WebTruckDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 }
+
+func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
+	var productDto dto.UpdateDriverDTO
+	err := json.NewDecoder(r.Body).Decode(&productDto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	productDto.Id = id
+	err = h.TruckDriverService.Update(productDto)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *WebTruckDriverHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	data, err := h.TruckDriverService.Delete(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(data)
+}

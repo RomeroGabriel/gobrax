@@ -13,6 +13,7 @@ type CreateDriverDTO struct {
 }
 
 type UpdateDriverDTO struct {
+	Id            string `json:"id"`
 	Name          string `json:"name"`
 	Email         string `json:"email"`
 	LicenseNumber string `json:"license_number"`

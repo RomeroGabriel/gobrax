@@ -30,6 +30,8 @@ func main() {
 		r.Post("/", webTruckDriverHandler.Create)
 		r.Get("/{id}", webTruckDriverHandler.FindById)
 		r.Get("/", webTruckDriverHandler.FindAll)
+		r.Put("/{id}", webTruckDriverHandler.Update)
+		r.Delete("/{id}", webTruckDriverHandler.Delete)
 	})
 
 	fmt.Println("Starting web server on port :8080")

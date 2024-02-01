@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto/parsers"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/infra/db"
@@ -16,8 +18,12 @@ func NewTruckDriverService(db db.TruckDriverRepositoryInterface) *TruckDriverSer
 	}
 }
 
+var (
+	ErrDriverNotFound = errors.New("truck driver not found")
+)
+
 func (t *TruckDriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error) {
-	tdEntity, err := parsers.TruckDriverDTOToEntity(input)
+	tdEntity, err := parsers.CreateTruckDriverDTOToEntity(input)
 	if err != nil {
 		return nil, err
 	}
@@ -50,4 +56,28 @@ func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
 		result = append(result, *parsers.EntityToTuckDriverDTO(v))
 	}
 	return result, err
+}
+
+func (t *TruckDriverService) Update(input dto.UpdateDriverDTO) error {
+	tdEntity, err := parsers.UpdateTruckDriverDTOToEntity(input)
+	if err != nil {
+		return err
+	}
+	return t.TruckDriverDB.Update(tdEntity)
+}
+
+func (t *TruckDriverService) Delete(id string) (*dto.DriverResponseDTO, error) {
+	td, err := t.TruckDriverDB.FindById(id)
+	if err != nil {
+		return nil, ErrDriverNotFound
+	}
+	err = t.TruckDriverDB.Delete(id)
+	if err != nil {
+		return nil, err
+	}
+	return &dto.DriverResponseDTO{
+		Id:    td.ID.String(),
+		Name:  td.Name,
+		Email: td.Email,
+	}, err
 }
