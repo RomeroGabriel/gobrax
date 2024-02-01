@@ -4,27 +4,25 @@
 package db
 
 import (
-	"database/sql"
 	"testing"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/suite"
 )
 
 type OrderRepositoryTestSuite struct {
 	suite.Suite
-	Db *sql.DB
+	Db *sqlx.DB
 }
 
 func (suite *OrderRepositoryTestSuite) SetupSuite() {
-	db, err := sql.Open("sqlite3", ":memory:")
-	suite.NoError(err)
-	db.Exec("CREATE TABLE orders (id varchar(255) NOT NULL, price float NOT NULL, tax float NOT NULL, final_price float NOT NULL, PRIMARY KEY (id))")
+	db := sqlx.MustOpen("sqlite3", ":memory:")
 	suite.Db = db
 }
 
-func (suite *OrderRepositoryTestSuite) TearDownTest() {
+func (suite *OrderRepositoryTestSuite) TearDownSuite() {
 	suite.Db.Close()
 }
 
@@ -32,10 +30,28 @@ func TestSuite(t *testing.T) {
 	suite.Run(t, new(OrderRepositoryTestSuite))
 }
 
-func (suite *OrderRepositoryTestSuite) TestGivenAnOrder_WhenSave_ThenShouldSaveOrder() {
-	order, err := entity.NewTruckDriver("Trucker 1", "email1@gg.com", "ABC12345")
+var name = "Trucker 1"
+var email = "email1@gg.com"
+var license = "ABC12345"
+
+func (suite *OrderRepositoryTestSuite) TestSaveTruckDriver() {
+	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
-	err = repo.Save(order)
+	err = repo.Save(tDriver)
 	suite.NoError(err)
+}
+
+func (suite *OrderRepositoryTestSuite) TestGetByIdTruckDriver() {
+	tDriver, err := entity.NewTruckDriver(name, email, license)
+	suite.NoError(err)
+	repo := NewTruckDriverRepository(suite.Db)
+	err = repo.Save(tDriver)
+	suite.NoError(err)
+
+	tDriverFind, err := repo.FindById(tDriver.ID.String())
+	suite.NoError(err)
+	suite.Equal(name, tDriverFind.Name)
+	suite.Equal(email, tDriverFind.Email)
+	suite.Equal(license, tDriverFind.LicenseNumber)
 }
