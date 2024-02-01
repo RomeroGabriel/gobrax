@@ -71,8 +71,8 @@ func (h *WebTruckDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
-	var productDto dto.UpdateDriverDTO
-	err := json.NewDecoder(r.Body).Decode(&productDto)
+	var data dto.UpdateDriverDTO
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -82,8 +82,8 @@ func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	productDto.Id = id
-	err = h.TruckDriverService.Update(productDto)
+	data.Id = id
+	err = h.TruckDriverService.Update(data)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
