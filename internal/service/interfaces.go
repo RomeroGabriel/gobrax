@@ -11,3 +11,11 @@ type TruckDriverServiceInterface interface {
 	Update(input dto.UpdateDriverDTO) error
 	Delete(id string) (*dto.DriverResponseDTO, error)
 }
+
+type TruckServiceInterface interface {
+	CreateTruck(input dto.CreateTruckDTO) (*dto.TruckResponseDTO, error)
+	FindByIdTruck(id string) (*dto.TruckResponseDTO, error)
+	FindByAll() ([]dto.TruckResponseDTO, error)
+	Update(input dto.UpdateTruckDTO) error
+	Delete(id string) (*dto.TruckResponseDTO, error)
+}
