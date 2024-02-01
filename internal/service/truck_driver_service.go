@@ -43,7 +43,7 @@ func (t *TruckDriverService) FindByIdTruckDriver(id string) (*dto.DriverResponse
 	if err != nil {
 		return nil, err
 	}
-	return parsers.EntityToTuckDriverDTO(*tdEntity), err
+	return parsers.EntityToTruckDriverDTO(*tdEntity), err
 }
 
 func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
@@ -53,7 +53,7 @@ func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
 	}
 	result := []dto.DriverResponseDTO{}
 	for _, v := range data {
-		result = append(result, *parsers.EntityToTuckDriverDTO(v))
+		result = append(result, *parsers.EntityToTruckDriverDTO(v))
 	}
 	return result, err
 }

@@ -23,7 +23,7 @@ func UpdateTruckDriverDTOToEntity(data dto.UpdateDriverDTO) (*entity.TruckDriver
 	}, nil
 }
 
-func EntityToTuckDriverDTO(tdEntity entity.TruckDriver) *dto.DriverResponseDTO {
+func EntityToTruckDriverDTO(tdEntity entity.TruckDriver) *dto.DriverResponseDTO {
 	return &dto.DriverResponseDTO{
 		Id:    tdEntity.ID.String(),
 		Name:  tdEntity.Name,
