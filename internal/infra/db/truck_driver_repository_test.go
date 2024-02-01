@@ -42,7 +42,7 @@ func (suite *OrderRepositoryTestSuite) TestSaveTruckDriver() {
 	suite.NoError(err)
 }
 
-func (suite *OrderRepositoryTestSuite) TestGetByIdTruckDriver() {
+func (suite *OrderRepositoryTestSuite) TestFindByIdTruckDriver() {
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
