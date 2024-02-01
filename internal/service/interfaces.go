@@ -6,4 +6,6 @@ import (
 
 type TruckDriverServiceInterface interface {
 	CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error)
+	FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error)
+	FindByAll() ([]dto.DriverResponseDTO, error)
 }

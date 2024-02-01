@@ -2,7 +2,13 @@ POST http://localhost:8080/truckdrivers HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Truck Driver 1",
-  "email": "ggg@g.com",
+  "name": "Truck Driver 2",
+  "email": "ggg2222@g.com",
   "license_number": "ABC1234556"
 }
+
+GET http://localhost:8080/truckdrivers HTTP/1.1
+Content-Type: application/json
+
+GET http://localhost:8080/truckdrivers/4f6ed2a9-22c4-4cb7-9c33-520c94a1109c HTTP/1.1
+Content-Type: application/json

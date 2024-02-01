@@ -17,11 +17,3 @@ type UpdateDriverDTO struct {
 	Email         string `json:"email"`
 	LicenseNumber string `json:"license_number"`
 }
-
-type GetDriverDTO struct {
-	Id string `json:"id"`
-}
-
-type DeleteDriverDTO struct {
-	Id string `json:"id"`
-}

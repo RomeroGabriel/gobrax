@@ -28,6 +28,8 @@ func main() {
 
 	r.Route("/truckdrivers", func(r chi.Router) {
 		r.Post("/", webTruckDriverHandler.Create)
+		r.Get("/{id}", webTruckDriverHandler.FindById)
+		r.Get("/", webTruckDriverHandler.FindAll)
 	})
 
 	fmt.Println("Starting web server on port :8080")

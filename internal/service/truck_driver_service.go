@@ -31,3 +31,23 @@ func (t *TruckDriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.
 		Email: tdEntity.Email,
 	}, err
 }
+
+func (t *TruckDriverService) FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error) {
+	tdEntity, err := t.TruckDriverDB.FindById(id)
+	if err != nil {
+		return nil, err
+	}
+	return parsers.EntityToTuckDriverDTO(*tdEntity), err
+}
+
+func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
+	data, err := t.TruckDriverDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	result := []dto.DriverResponseDTO{}
+	for _, v := range data {
+		result = append(result, *parsers.EntityToTuckDriverDTO(v))
+	}
+	return result, err
+}
