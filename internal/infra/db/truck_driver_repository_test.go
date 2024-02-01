@@ -27,7 +27,7 @@ func (suite *TruckDriverRepositoryTestSuite) TearDownSuite() {
 	suite.Db.Close()
 }
 
-func TestSuite(t *testing.T) {
+func TestSuiteTruckDriver(t *testing.T) {
 	suite.Run(t, new(TruckDriverRepositoryTestSuite))
 }
 
