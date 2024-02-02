@@ -14,9 +14,9 @@ type TruckDriver struct {
 }
 
 var (
-	ErrNameIsRequired          = errors.New("name is required")
-	ErrEmailIsRequired         = errors.New("email is required")
-	ErrLicenseNumberIsRequired = errors.New("license number is required")
+	ErrNameIsRequired          = errors.New("truck driver name is required")
+	ErrEmailIsRequired         = errors.New("truck driver email is required")
+	ErrLicenseNumberIsRequired = errors.New("truck driver license number is required")
 )
 
 func NewTruckDriver(name, email, licenseNumber string) (*TruckDriver, error) {

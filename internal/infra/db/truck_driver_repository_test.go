@@ -4,22 +4,25 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/suite"
 )
 
 type TruckDriverRepositoryTestSuite struct {
 	suite.Suite
-	Db *sqlx.DB
+	Db *sql.DB
 }
 
 func (suite *TruckDriverRepositoryTestSuite) SetupSuite() {
-	db := sqlx.MustOpen("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		panic(err)
+	}
 	suite.Db = db
 }
 
@@ -75,9 +78,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
 
 	tDriverFind, err := repo.FindById(tDriver.ID.String())
 	suite.Error(err)
-	suite.Equal("", tDriverFind.Name)
-	suite.Equal("", tDriverFind.Email)
-	suite.Equal("", tDriverFind.LicenseNumber)
+	suite.Nil(tDriverFind)
 }
 
 func (suite *TruckDriverRepositoryTestSuite) TestFindAllTruckDriver() {
@@ -129,7 +130,5 @@ func (suite *TruckDriverRepositoryTestSuite) TestDeleteTruckDriver() {
 
 	tDriverFind, err := repo.FindById(tDriver.ID.String())
 	suite.Error(err)
-	suite.Equal("", tDriverFind.Name)
-	suite.Equal("", tDriverFind.Email)
-	suite.Equal("", tDriverFind.LicenseNumber)
+	suite.Nil(tDriverFind)
 }
