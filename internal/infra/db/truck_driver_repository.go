@@ -20,16 +20,6 @@ var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS TruckDriver (
 	LicenseNumber TEXT NOT NULL,
 	PRIMARY KEY (id));`
 
-func acquireConn(ctx context.Context, db *sql.DB) (*sql.Conn, error) {
-	conn, err := db.Conn(ctx)
-	if err != nil {
-		log.Println("Error creating connection!")
-		log.Println(err.Error())
-		return nil, err
-	}
-	return conn, nil
-}
-
 func NewTruckDriverRepository(db *sql.DB) *TruckDriverRepository {
 	err := db.Ping()
 	if err != nil {

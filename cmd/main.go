@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,12 +11,14 @@ import (
 	"github.com/RomeroGabriel/gobrax-challenge/internal/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	database := sqlx.MustOpen("sqlite3", ":memory:")
+	database, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		panic(err)
+	}
 	defer database.Close()
 
 	truckDriverDb := db.NewTruckDriverRepository(database)

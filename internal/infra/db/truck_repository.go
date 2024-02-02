@@ -1,26 +1,28 @@
 package db
 
 import (
+	"context"
+	"database/sql"
 	"log"
+	"time"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
-	"github.com/jmoiron/sqlx"
 )
 
 type TruckRepository struct {
-	Db *sqlx.DB
+	Db *sql.DB
 }
 
 var schemaTruck = `CREATE TABLE IF NOT EXISTS Truck (
-    id TEXT NOT NULL,
-    modeltype TEXT NOT NULL,
-    year INTEGER NOT NULL,
-	manufacturer TEXT NOT NULL,
-	licenseplate TEXT NOT NULL,
-	fueltype TEXT NOT NULL,
+    Id TEXT NOT NULL,
+    ModelType TEXT NOT NULL,
+    Year INTEGER NOT NULL,
+	Manufacturer TEXT NOT NULL,
+	LicensePlate TEXT NOT NULL,
+	Fueltype TEXT NOT NULL,
 	PRIMARY KEY (id));`
 
-func NewTruckRepository(db *sqlx.DB) *TruckRepository {
+func NewTruckRepository(db *sql.DB) *TruckRepository {
 	err := db.Ping()
 	if err != nil {
 		log.Printf("%q\n", err)
@@ -35,16 +37,23 @@ func NewTruckRepository(db *sqlx.DB) *TruckRepository {
 }
 
 func (r *TruckRepository) Save(truck *entity.Truck) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	conn, err := acquireConn(ctx, r.Db)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
 	var sql = `INSERT INTO Truck (
-			id,
-			modeltype,
-			year,
-			manufacturer,
-			licenseplate,
-			fueltype
+			Id,
+			ModelType,
+			Year,
+			Manufacturer,
+			LicensePlate,
+			Fueltype
 		)
 		VALUES (?,?,?,?,?,?)`
-	_, err := r.Db.Exec(sql,
+	_, err = conn.ExecContext(ctx, sql,
 		truck.ID.String(),
 		truck.ModelType,
 		truck.Year,
@@ -55,58 +64,136 @@ func (r *TruckRepository) Save(truck *entity.Truck) error {
 	if err != nil {
 		return err
 	}
-	return nil
+	select {
+	case <-ctx.Done():
+		log.Println("Context Canceled on Save")
+		return context.Canceled
+	default:
+		return nil
+	}
 }
 
 func (r *TruckRepository) FindById(id string) (*entity.Truck, error) {
-	tDriver := entity.Truck{}
-	var sql = `SELECT
-			id,
-			modeltype,
-			year,
-			manufacturer,
-			licenseplate,
-			fueltype
-		FROM Truck WHERE id = ?;`
-	err := r.Db.Get(&tDriver, sql, id)
-	return &tDriver, err
-}
-
-func (r *TruckRepository) FindAll() ([]entity.Truck, error) {
-	tAll := []entity.Truck{}
-	var sql = `SELECT
-			id,
-			modeltype,
-			year,
-			manufacturer,
-			licenseplate,
-			fueltype
-		FROM Truck;`
-	err := r.Db.Select(&tAll, sql)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	conn, err := acquireConn(ctx, r.Db)
 	if err != nil {
 		return nil, err
 	}
-	return tAll, err
+	defer conn.Close()
+	var sql = `SELECT
+		Id,
+		ModelType,
+		Year,
+		Manufacturer,
+		LicensePlate,
+		Fueltype
+		FROM Truck WHERE id = ?;`
+	var result entity.Truck
+	err = conn.QueryRowContext(ctx, sql, id).Scan(
+		&result.ID,
+		&result.ModelType,
+		&result.Year,
+		&result.Manufacturer,
+		&result.LicensePlate,
+		&result.FuelType,
+	)
+	if err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		log.Println("Context Canceled on FindById")
+		return nil, context.Canceled
+	default:
+		return &result, nil
+	}
+}
+
+func (r *TruckRepository) FindAll() ([]entity.Truck, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	conn, err := acquireConn(ctx, r.Db)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+	var sql = `SELECT
+	id,
+	ModelType,
+	Year,
+	Manufacturer,
+	LicensePlate,
+	Fueltype
+	FROM Truck;`
+	rows, err := conn.QueryContext(ctx, sql)
+	if err != nil {
+		return nil, err
+	}
+	tAll := []entity.Truck{}
+	for rows.Next() {
+		var td entity.Truck
+		if err := rows.Scan(
+			&td.ID,
+			&td.ModelType,
+			&td.Year,
+			&td.Manufacturer,
+			&td.LicensePlate,
+			&td.FuelType,
+		); err != nil {
+			return nil, err
+		}
+		tAll = append(tAll, td)
+	}
+	select {
+	case <-ctx.Done():
+		log.Println("Context Canceled on FindAll")
+		return nil, context.Canceled
+	default:
+		return tAll, nil
+	}
 }
 
 func (r *TruckRepository) Update(truck *entity.Truck) error {
-	var sql = `UPDATE Truck SET modeltype = ?, licenseplate = ? WHERE id = ?;`
-	_, err := r.Db.Exec(sql, truck.ModelType, truck.LicensePlate, truck.ID.String())
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	conn, err := acquireConn(ctx, r.Db)
+	if err != nil {
+		return nil
+	}
+	defer conn.Close()
+	var sql = `UPDATE Truck SET ModelType = ?, LicensePlate = ? WHERE id = ?;`
+	_, err = conn.ExecContext(ctx, sql, truck.ModelType, truck.LicensePlate, truck.ID.String())
 	if err != nil {
 		return err
 	}
-	return nil
+	select {
+	case <-ctx.Done():
+		log.Println("Context Canceled on Update")
+		return context.Canceled
+	default:
+		return nil
+	}
 }
 
 func (r *TruckRepository) Delete(id string) error {
-	_, err := r.FindById(id)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	conn, err := acquireConn(ctx, r.Db)
 	if err != nil {
 		return err
 	}
+	defer conn.Close()
 	// TODO: Add logical delete
-	_, err = r.Db.Exec("DELETE FROM Truck WHERE id = ?", id)
+	_, err = conn.ExecContext(ctx, "DELETE FROM Truck WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
-	return nil
+	select {
+	case <-ctx.Done():
+		log.Println("Context Canceled on Delete")
+		return nil
+	default:
+		return nil
+	}
 }
