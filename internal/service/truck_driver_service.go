@@ -9,10 +9,10 @@ import (
 )
 
 type TruckDriverService struct {
-	TruckDriverDB db.TruckDriverRepositoryInterface
+	TruckDriverDB db.ITruckDriverRepository
 }
 
-func NewTruckDriverService(db db.TruckDriverRepositoryInterface) *TruckDriverService {
+func NewTruckDriverService(db db.ITruckDriverRepository) *TruckDriverService {
 	return &TruckDriverService{
 		TruckDriverDB: db,
 	}
