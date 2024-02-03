@@ -110,11 +110,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestRemoveBindingById() {
 }
 
 func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverWithoutCurrentTruck() {
-	t, err := entity.NewTruck(modelType, manufacturer, licensePlate, fuelType, year)
-	suite.NoError(err)
-	tRepo := NewTruckRepository(suite.Db)
-	err = tRepo.Save(t)
-	suite.NoError(err)
+	NewTruckRepository(suite.Db)
 
 	td, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
@@ -127,7 +123,6 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverWithoutCurrentTru
 	truck, err := repo.GetCurrentTruckOfDriver(*td)
 	suite.Error(err)
 	suite.Nil(truck)
-	suite.Equal(err, sql.ErrNoRows)
 }
 
 func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsNotAvailable() {

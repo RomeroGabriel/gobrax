@@ -37,12 +37,7 @@ func NewTruckDriverRepository(db *sql.DB) *TruckDriverRepository {
 func (r *TruckDriverRepository) Save(truckDriver *entity.TruckDriver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	conn, err := acquireConn(ctx, r.Db)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-	_, err = conn.ExecContext(ctx, "INSERT INTO TruckDriver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
+	_, err := r.Db.ExecContext(ctx, "INSERT INTO TruckDriver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
 	if err != nil {
 		return err
 	}
@@ -58,14 +53,12 @@ func (r *TruckDriverRepository) Save(truckDriver *entity.TruckDriver) error {
 func (r *TruckDriverRepository) FindById(id string) (*entity.TruckDriver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	conn, err := acquireConn(ctx, r.Db)
+	var result entity.TruckDriver
+	var sql = "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver WHERE id = ?"
+	err := r.Db.QueryRowContext(ctx, sql, id).Scan(&result.ID, &result.Name, &result.Email, &result.LicenseNumber)
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
-	var result entity.TruckDriver
-	var sql = "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver WHERE id = ?"
-	err = conn.QueryRowContext(ctx, sql, id).Scan(&result.ID, &result.Name, &result.Email, &result.LicenseNumber)
 	err = result.Validate()
 	if err != nil {
 		return nil, err
@@ -82,12 +75,7 @@ func (r *TruckDriverRepository) FindById(id string) (*entity.TruckDriver, error)
 func (r *TruckDriverRepository) FindAll() ([]entity.TruckDriver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	conn, err := acquireConn(ctx, r.Db)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
-	rows, err := conn.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver")
+	rows, err := r.Db.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver")
 	if err != nil {
 		return nil, err
 	}
@@ -111,13 +99,8 @@ func (r *TruckDriverRepository) FindAll() ([]entity.TruckDriver, error) {
 func (r *TruckDriverRepository) Update(truckDriver *entity.TruckDriver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	conn, err := acquireConn(ctx, r.Db)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
 	var sql = "UPDATE TruckDriver SET Name = ?, Email = ?, LicenseNumber = ?  WHERE Id = ?"
-	_, err = conn.ExecContext(ctx, sql, truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber, truckDriver.ID.String())
+	_, err := r.Db.ExecContext(ctx, sql, truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber, truckDriver.ID.String())
 	if err != nil {
 		return err
 	}
@@ -133,13 +116,7 @@ func (r *TruckDriverRepository) Update(truckDriver *entity.TruckDriver) error {
 func (r *TruckDriverRepository) Delete(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	conn, err := acquireConn(ctx, r.Db)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-	// TODO: Add logical delete
-	_, err = conn.ExecContext(ctx, "DELETE FROM TruckDriver WHERE id = ?", id)
+	_, err := r.Db.ExecContext(ctx, "DELETE FROM TruckDriver WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
