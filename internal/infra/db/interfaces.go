@@ -28,6 +28,6 @@ type IDriverTruckBindingRespository interface {
 	RemoveBinding(truck entity.Truck, driver entity.TruckDriver) error
 	RemoveBindingById(id string) error
 	GetCurrentTruckOfDriver(driver entity.TruckDriver) (*entity.Truck, error)
-	DriverHasTruck(driver entity.TruckDriver) (bool, error)
+	DriverIsAvailable(driver entity.TruckDriver) (bool, error)
 	TruckIsAvailable(truck entity.Truck) (bool, error)
 }
