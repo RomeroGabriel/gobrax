@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"log"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/infra/db"
@@ -42,8 +41,6 @@ func (s *DriverTruckBindingService) BindingDriverToTruck(input dto.CreateBinding
 	}
 	driverIsAvailable, err := s.DriverTruckBindingDB.DriverIsAvailable(*driver)
 	truckIsAvailable, err := s.DriverTruckBindingDB.TruckIsAvailable(*truck)
-	log.Println("Is DRIVER available: ", driverIsAvailable)
-	log.Println("Is TRUCK available: ", truckIsAvailable)
 
 	if !driverIsAvailable && !truckIsAvailable {
 		return nil, ErrTruckAndDriverIsNotAvailable
