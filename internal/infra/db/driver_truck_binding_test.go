@@ -127,9 +127,10 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverWithoutCurrentTru
 	truck, err := repo.GetCurrentTruckOfDriver(*td)
 	suite.Error(err)
 	suite.Nil(truck)
+	suite.Equal(err, sql.ErrNoRows)
 }
 
-func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverHasTruck() {
+func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsNotAvailable() {
 	t, err := entity.NewTruck(modelType, manufacturer, licensePlate, fuelType, year)
 	suite.NoError(err)
 	tRepo := NewTruckRepository(suite.Db)
@@ -146,7 +147,20 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverHasTruck() {
 	_, err = repo.CreateBinding(*t, *td)
 	suite.NoError(err)
 
-	hasValue, err := repo.DriverHasTruck(*td)
+	hasValue, err := repo.DriverIsAvailable(*td)
+	suite.NoError(err)
+	suite.Equal(false, hasValue)
+}
+
+func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsAvailable() {
+	td, err := entity.NewTruckDriver(name, email, license)
+	suite.NoError(err)
+	tdRepo := NewTruckDriverRepository(suite.Db)
+	err = tdRepo.Save(td)
+	suite.NoError(err)
+
+	repo := NewDriverTruckBindingRespository(suite.Db)
+	hasValue, err := repo.DriverIsAvailable(*td)
 	suite.NoError(err)
 	suite.Equal(true, hasValue)
 }
@@ -178,12 +192,6 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestTruckIsAvailable() {
 	suite.NoError(err)
 	tRepo := NewTruckRepository(suite.Db)
 	err = tRepo.Save(t)
-	suite.NoError(err)
-
-	td, err := entity.NewTruckDriver(name, email, license)
-	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
-	err = tdRepo.Save(td)
 	suite.NoError(err)
 
 	repo := NewDriverTruckBindingRespository(suite.Db)

@@ -175,7 +175,7 @@ func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.Tr
 	}
 }
 
-func (r *DriverTruckBindingRespository) DriverHasTruck(driver entity.TruckDriver) (bool, error) {
+func (r *DriverTruckBindingRespository) DriverIsAvailable(driver entity.TruckDriver) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	conn, err := acquireConn(ctx, r.Db)
@@ -192,7 +192,7 @@ func (r *DriverTruckBindingRespository) DriverHasTruck(driver entity.TruckDriver
 	if err != nil {
 		return false, err
 	}
-	return count == 1, err
+	return !(count == 1), err
 }
 
 func (r *DriverTruckBindingRespository) TruckIsAvailable(truck entity.Truck) (bool, error) {
