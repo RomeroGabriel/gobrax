@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/RomeroGabriel/gobrax-challenge/configs"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/infra/db"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/infra/webserver/handlers"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/service"
@@ -15,7 +16,11 @@ import (
 )
 
 func main() {
-	database, err := sql.Open("sqlite3", ":memory:")
+	configs, err := configs.LoadConfig(".")
+	if err != nil {
+		panic(err)
+	}
+	database, err := sql.Open(configs.DBDriver, configs.DBConnection)
 	if err != nil {
 		panic(err)
 	}
