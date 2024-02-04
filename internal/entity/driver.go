@@ -14,14 +14,12 @@ type Driver struct {
 }
 
 var (
-	ErrNameIsRequired          = errors.New("truck driver name is required")
-	ErrEmailIsRequired         = errors.New("truck driver email is required")
-	ErrLicenseNumberIsRequired = errors.New("truck driver license number is required")
+	ErrNameIsRequired          = errors.New("driver name is required")
+	ErrEmailIsRequired         = errors.New("driver email is required")
+	ErrLicenseNumberIsRequired = errors.New("driver license number is required")
 )
 
 func NewDriver(name, email, licenseNumber string) (*Driver, error) {
-	// TODO: Add validations for email(eee@@@@.com), name(size), and licenseNumber(size)
-	// TODO: Create entity for LicenseNumber
 	id := entity.NewID()
 	td := &Driver{
 		ID:            id,
