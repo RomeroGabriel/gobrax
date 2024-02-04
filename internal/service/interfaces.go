@@ -5,7 +5,7 @@ import (
 	pkg "github.com/RomeroGabriel/gobrax-challenge/pkg/entity"
 )
 
-type ITruckDriverService interface {
+type IDriverService interface {
 	CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error)
 	FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error)
 	FindByAll() ([]dto.DriverResponseDTO, error)
