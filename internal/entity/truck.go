@@ -24,10 +24,6 @@ var (
 )
 
 func NewTruck(modelType, manufacturer, licensePlate, fuelType string, year uint16) (*Truck, error) {
-	// TODO: Add validations for LicensePlate(size)
-	// TODO: Create entity for Manufacturer (Scania, Volvo, etc and save on DB)
-	// TODO: Create entity for FuelType ("enum" for the types of fuel)
-
 	id := entity.NewID()
 	td := &Truck{
 		ID:           id,
