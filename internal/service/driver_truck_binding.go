@@ -9,13 +9,13 @@ import (
 )
 
 type DriverTruckBindingService struct {
-	TruckDriverDB        db.ITruckDriverRepository
+	TruckDriverDB        db.IDriverRepository
 	TruckDB              db.ITruckRepository
 	DriverTruckBindingDB db.IDriverTruckBindingRespository
 }
 
 func NewDriverTruckBindingService(
-	tdDB db.ITruckDriverRepository,
+	tdDB db.IDriverRepository,
 	tDB db.ITruckRepository,
 	tddDB db.IDriverTruckBindingRespository,
 ) *DriverTruckBindingService {

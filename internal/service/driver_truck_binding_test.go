@@ -17,7 +17,7 @@ import (
 type DriverTruckBindingServiceTestSuite struct {
 	suite.Suite
 	dbInstance *sql.DB
-	// TruckDriverDB        db.ITruckDriverRepository
+	// TruckDriverDB        db.IDriverRepository
 	// TruckDB              db.ITruckRepository
 	// DriverTruckBindingDB db.IDriverTruckBindingRespository
 }

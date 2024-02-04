@@ -5,7 +5,7 @@ import (
 	pkg "github.com/RomeroGabriel/gobrax-challenge/pkg/entity"
 )
 
-type ITruckDriverRepository interface {
+type IDriverRepository interface {
 	Save(truckDriver *entity.Driver) error
 	FindById(id string) (*entity.Driver, error)
 	FindAll() ([]entity.Driver, error)
