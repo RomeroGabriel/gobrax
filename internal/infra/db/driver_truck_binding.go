@@ -21,7 +21,7 @@ var schemaDriverTruckBinding = `CREATE TABLE IF NOT EXISTS DriverTruckMapping (
 	CreatedAt TEXT NOT NULL,
 	DeletedAt TEXT,
 	PRIMARY KEY (id),
-	FOREIGN KEY(FkDriver) REFERENCES TruckDriver(Id),
+	FOREIGN KEY(FkDriver) REFERENCES Driver(Id),
 	FOREIGN KEY(FkTruck) REFERENCES Truck(Id));`
 
 func NewDriverTruckBindingRespository(db *sql.DB) *DriverTruckBindingRespository {
