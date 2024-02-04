@@ -10,12 +10,12 @@ import (
 )
 
 type WebTruckDriverHandler struct {
-	TruckDriverService service.ITruckDriverService
+	DriverService service.ITruckDriverService
 }
 
 func NewWebTruckDriverHandler(service service.ITruckDriverService) *WebTruckDriverHandler {
 	return &WebTruckDriverHandler{
-		TruckDriverService: service,
+		DriverService: service,
 	}
 }
 
@@ -27,7 +27,7 @@ func (h *WebTruckDriverHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseData, err := h.TruckDriverService.CreateTruckDriver(data)
+	responseData, err := h.DriverService.CreateTruckDriver(data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -45,7 +45,7 @@ func (h *WebTruckDriverHandler) FindById(w http.ResponseWriter, r *http.Request)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	responseData, err := h.TruckDriverService.FindByIdTruckDriver(id)
+	responseData, err := h.DriverService.FindByIdTruckDriver(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -58,7 +58,7 @@ func (h *WebTruckDriverHandler) FindById(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *WebTruckDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) {
-	responseData, err := h.TruckDriverService.FindByAll()
+	responseData, err := h.DriverService.FindByAll()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -83,7 +83,7 @@ func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data.Id = id
-	err = h.TruckDriverService.Update(data)
+	err = h.DriverService.Update(data)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -97,7 +97,7 @@ func (h *WebTruckDriverHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	data, err := h.TruckDriverService.Delete(id)
+	data, err := h.DriverService.Delete(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

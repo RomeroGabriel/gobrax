@@ -8,21 +8,21 @@ import (
 	"github.com/RomeroGabriel/gobrax-challenge/internal/infra/db"
 )
 
-type TruckDriverService struct {
+type DriverService struct {
 	TruckDriverDB db.IDriverRepository
 }
 
-func NewTruckDriverService(db db.IDriverRepository) *TruckDriverService {
-	return &TruckDriverService{
+func NewTruckDriverService(db db.IDriverRepository) *DriverService {
+	return &DriverService{
 		TruckDriverDB: db,
 	}
 }
 
 var (
-	ErrDriverNotFound = errors.New("truck driver not found")
+	ErrDriverNotFound = errors.New("driver not found")
 )
 
-func (t *TruckDriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error) {
+func (t *DriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error) {
 	tdEntity, err := parsers.CreateTruckDriverDTOToEntity(input)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (t *TruckDriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.
 	}, err
 }
 
-func (t *TruckDriverService) FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error) {
+func (t *DriverService) FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error) {
 	tdEntity, err := t.TruckDriverDB.FindById(id)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (t *TruckDriverService) FindByIdTruckDriver(id string) (*dto.DriverResponse
 	return parsers.EntityToTruckDriverDTO(*tdEntity), err
 }
 
-func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
+func (t *DriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
 	data, err := t.TruckDriverDB.FindAll()
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (t *TruckDriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
 	return result, err
 }
 
-func (t *TruckDriverService) Update(input dto.UpdateDriverDTO) error {
+func (t *DriverService) Update(input dto.UpdateDriverDTO) error {
 	tdEntity, err := parsers.UpdateTruckDriverDTOToEntity(input)
 	if err != nil {
 		return err
@@ -66,7 +66,7 @@ func (t *TruckDriverService) Update(input dto.UpdateDriverDTO) error {
 	return t.TruckDriverDB.Update(tdEntity)
 }
 
-func (t *TruckDriverService) Delete(id string) (*dto.DriverResponseDTO, error) {
+func (t *DriverService) Delete(id string) (*dto.DriverResponseDTO, error) {
 	td, err := t.TruckDriverDB.FindById(id)
 	if err != nil {
 		return nil, ErrDriverNotFound
