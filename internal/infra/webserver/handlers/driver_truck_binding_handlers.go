@@ -6,6 +6,7 @@ import (
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto"
 	"github.com/RomeroGabriel/gobrax-challenge/internal/service"
+	"github.com/go-chi/chi"
 )
 
 type DriverTruckBindingHandler struct {
@@ -19,12 +20,19 @@ func NewDriverTruckBindingHandler(service service.IDriverTruckBindingService) *D
 }
 
 func (h *DriverTruckBindingHandler) CreateBinding(w http.ResponseWriter, r *http.Request) {
-	var data dto.CreateBindingDTO
-	err := json.NewDecoder(r.Body).Decode(&data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	idTruck := chi.URLParam(r, "idtruck")
+	if idTruck == "" {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	idDriver := chi.URLParam(r, "iddriver")
+	if idDriver == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	var data dto.CreateBindingDTO
+	data.IdDriver = idDriver
+	data.IdTruck = idTruck
 
 	responseData, err := h.bindingService.BindingDriverToTruck(data)
 	if err != nil {

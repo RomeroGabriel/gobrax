@@ -51,9 +51,8 @@ func main() {
 		r.Put("/{id}", webTruckHandler.Update)
 		r.Delete("/{id}", webTruckHandler.Delete)
 	})
-
-	r.Route("/drivers-trucks", func(r chi.Router) {
-		r.Post("/", bindingHandler.CreateBinding)
+	r.Route("/bindings", func(r chi.Router) {
+		r.Post("/truck/{idtruck}/driver/{iddriver}", bindingHandler.CreateBinding)
 	})
 
 	fmt.Println("Starting web server on port :8080")
