@@ -12,7 +12,7 @@ type DriverService struct {
 	TruckDriverDB db.IDriverRepository
 }
 
-func NewTruckDriverService(db db.IDriverRepository) *DriverService {
+func NewDriverService(db db.IDriverRepository) *DriverService {
 	return &DriverService{
 		TruckDriverDB: db,
 	}

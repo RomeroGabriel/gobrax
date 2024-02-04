@@ -22,7 +22,7 @@ func main() {
 	defer database.Close()
 
 	truckDriverDb := db.NewTruckDriverRepository(database)
-	truckDriverService := service.NewTruckDriverService(truckDriverDb)
+	truckDriverService := service.NewDriverService(truckDriverDb)
 	webDriverHandler := handlers.NewWebDriverHandler(truckDriverService)
 
 	truckDb := db.NewTruckRepository(database)
