@@ -44,7 +44,7 @@ var email = "email1@gg.com"
 var license = "ABC12345"
 
 func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruck() {
-	truckDriverDB := db.NewTruckDriverRepository(suite.dbInstance)
+	truckDriverDB := db.NewDriverRepository(suite.dbInstance)
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
@@ -57,7 +57,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruck() {
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
+	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -68,7 +68,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruck() {
 }
 
 func (suite *DriverTruckBindingServiceTestSuite) TestBindingTruckAndDriverToTruckNotAvailable() {
-	truckDriverDB := db.NewTruckDriverRepository(suite.dbInstance)
+	truckDriverDB := db.NewDriverRepository(suite.dbInstance)
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
@@ -81,7 +81,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingTruckAndDriverToTruc
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
+	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -94,7 +94,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingTruckAndDriverToTruc
 }
 
 func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruckNotAvailable() {
-	truckDriverDB := db.NewTruckDriverRepository(suite.dbInstance)
+	truckDriverDB := db.NewDriverRepository(suite.dbInstance)
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
@@ -107,7 +107,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruckNotAvai
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
+	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -129,7 +129,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruckNotAvai
 }
 
 func (suite *DriverTruckBindingServiceTestSuite) TestTruckIsNotAvailable() {
-	truckDriverDB := db.NewTruckDriverRepository(suite.dbInstance)
+	truckDriverDB := db.NewDriverRepository(suite.dbInstance)
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
@@ -142,7 +142,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestTruckIsNotAvailable() {
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
+	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),

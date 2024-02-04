@@ -19,7 +19,7 @@ var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS Driver (
 	LicenseNumber TEXT NOT NULL,
 	PRIMARY KEY (id));`
 
-func NewTruckDriverRepository(db *sql.DB) *DriverRepository {
+func NewDriverRepository(db *sql.DB) *DriverRepository {
 	err := db.Ping()
 	if err != nil {
 		log.Printf("%q\n", err)

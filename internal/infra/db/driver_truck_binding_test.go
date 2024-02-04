@@ -54,7 +54,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestGetCurrentTruckOfDriver
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -76,7 +76,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestRemoveBinding() {
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -97,7 +97,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestRemoveBindingById() {
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -114,7 +114,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverWithoutCurrentTru
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -134,7 +134,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsNotAvailable() 
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -150,7 +150,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsNotAvailable() 
 func (suite *DriverTruckBindingRespositoryTestSuite) TestDriverIsAvailable() {
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 
@@ -169,7 +169,7 @@ func (suite *DriverTruckBindingRespositoryTestSuite) TestTruckIsNotAvailable() {
 
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	tdRepo := NewTruckDriverRepository(suite.Db)
+	tdRepo := NewDriverRepository(suite.Db)
 	err = tdRepo.Save(td)
 	suite.NoError(err)
 

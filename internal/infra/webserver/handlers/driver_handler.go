@@ -85,7 +85,7 @@ func (h *WebDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
 	data.Id = id
 	err = h.DriverService.Update(data)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

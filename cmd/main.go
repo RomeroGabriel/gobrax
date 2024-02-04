@@ -26,16 +26,17 @@ func main() {
 	}
 	defer database.Close()
 
-	truckDriverDb := db.NewTruckDriverRepository(database)
-	truckDriverService := service.NewDriverService(truckDriverDb)
+	truckDriverDb := db.NewDriverRepository(database)
+	bindingDb := db.NewDriverTruckBindingRespository(database)
+
+	truckDriverService := service.NewDriverService(truckDriverDb, bindingDb)
 	webDriverHandler := handlers.NewWebDriverHandler(truckDriverService)
 
 	truckDb := db.NewTruckRepository(database)
-	truckService := service.NewTruckService(truckDb)
+	truckService := service.NewTruckService(*truckDb)
 	webTruckHandler := handlers.NewWebTruckHandler(truckService)
 
-	bindingDb := db.NewDriverTruckBindingRespository(database)
-	bindingService := service.NewDriverTruckBindingService(truckDriverDb, truckDb, bindingDb)
+	bindingService := service.NewDriverTruckBindingService(*truckDriverDb, *truckDb, *bindingDb)
 	bindingHandler := handlers.NewDriverTruckBindingHandler(bindingService)
 
 	r := chi.NewRouter()

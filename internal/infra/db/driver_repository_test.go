@@ -41,7 +41,7 @@ var license = "ABC12345"
 func (suite *DriverRepositoryTestSuite) TestSaveTruckDriver() {
 	tDriver, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 	err = repo.Save(tDriver)
 	suite.NoError(err)
 }
@@ -49,7 +49,7 @@ func (suite *DriverRepositoryTestSuite) TestSaveTruckDriver() {
 func (suite *DriverRepositoryTestSuite) TestSaveDuplicateTruckDriver() {
 	tDriver, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 	err = repo.Save(tDriver)
 	suite.NoError(err)
 
@@ -60,7 +60,7 @@ func (suite *DriverRepositoryTestSuite) TestSaveDuplicateTruckDriver() {
 func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriver() {
 	tDriver, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 	err = repo.Save(tDriver)
 	suite.NoError(err)
 
@@ -74,7 +74,7 @@ func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriver() {
 func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
 	tDriver, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 
 	tDriverFind, err := repo.FindById(tDriver.ID.String())
 	suite.Error(err)
@@ -82,7 +82,7 @@ func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
 }
 
 func (suite *DriverRepositoryTestSuite) TestFindAllTruckDriver() {
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 
 	for i := 0; i < 10; i++ {
 		td, err := entity.NewDriver(fmt.Sprintf("TruckDriver %d", i), email, license)
@@ -99,7 +99,7 @@ func (suite *DriverRepositoryTestSuite) TestFindAllTruckDriver() {
 }
 
 func (suite *DriverRepositoryTestSuite) TestUpdateTruckDriver() {
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 
 	tDriver, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
@@ -119,7 +119,7 @@ func (suite *DriverRepositoryTestSuite) TestUpdateTruckDriver() {
 }
 
 func (suite *DriverRepositoryTestSuite) TestDeleteTruckDriver() {
-	repo := NewTruckDriverRepository(suite.Db)
+	repo := NewDriverRepository(suite.Db)
 	tDriver, err := entity.NewDriver(name, email, license)
 
 	suite.NoError(err)
