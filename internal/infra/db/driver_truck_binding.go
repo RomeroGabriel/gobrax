@@ -39,7 +39,7 @@ func NewDriverTruckBindingRespository(db *sql.DB) *DriverTruckBindingRespository
 }
 
 func (r *DriverTruckBindingRespository) CreateBinding(truck entity.Truck, driver entity.Driver) (*pkg.ID, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 
 	var sql = `INSERT INTO DriverTruckMapping (
@@ -71,7 +71,7 @@ func (r *DriverTruckBindingRespository) CreateBinding(truck entity.Truck, driver
 }
 
 func (r *DriverTruckBindingRespository) RemoveBinding(truck entity.Truck, driver entity.Driver) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `UPDATE DriverTruckMapping SET DeletedAt = ? WHERE FkDriver = ? AND FkTruck = ? AND DeletedAt IS NULL`
 	var deletedAt = time.Now().Format(stringFormat)
@@ -90,7 +90,7 @@ func (r *DriverTruckBindingRespository) RemoveBinding(truck entity.Truck, driver
 }
 
 func (r *DriverTruckBindingRespository) RemoveBindingById(id string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `UPDATE DriverTruckMapping SET DeletedAt = ? WHERE Id = ?`
 	var deletedAt = time.Now().Format(stringFormat)
@@ -109,7 +109,7 @@ func (r *DriverTruckBindingRespository) RemoveBindingById(id string) error {
 }
 
 func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.Driver) (*entity.Truck, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `SELECT
 		truck.Id,
@@ -144,7 +144,7 @@ func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.Dr
 }
 
 func (r *DriverTruckBindingRespository) DriverIsAvailable(driver entity.Driver) (bool, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var count int
 	var sql = "SELECT COUNT(*) FROM DriverTruckMapping WHERE FkDriver = ? AND DeletedAt IS NULL;"
@@ -156,7 +156,7 @@ func (r *DriverTruckBindingRespository) DriverIsAvailable(driver entity.Driver) 
 }
 
 func (r *DriverTruckBindingRespository) TruckIsAvailable(truck entity.Truck) (bool, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var count int
 	var sql = "SELECT COUNT(*) FROM DriverTruckMapping WHERE FkTruck = ? AND DeletedAt IS NULL;"

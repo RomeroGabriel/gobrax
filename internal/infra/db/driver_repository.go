@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"time"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
 )
@@ -35,7 +34,7 @@ func NewTruckDriverRepository(db *sql.DB) *DriverRepository {
 }
 
 func (r *DriverRepository) Save(truckDriver *entity.Driver) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	_, err := r.Db.ExecContext(ctx, "INSERT INTO Driver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
 	if err != nil {
@@ -51,7 +50,7 @@ func (r *DriverRepository) Save(truckDriver *entity.Driver) error {
 }
 
 func (r *DriverRepository) FindById(id string) (*entity.Driver, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var result entity.Driver
 	var sql = "SELECT Id, Name, Email, LicenseNumber FROM Driver WHERE id = ?"
@@ -73,7 +72,7 @@ func (r *DriverRepository) FindById(id string) (*entity.Driver, error) {
 }
 
 func (r *DriverRepository) FindAll() ([]entity.Driver, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	rows, err := r.Db.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM Driver")
 	if err != nil {
@@ -97,7 +96,7 @@ func (r *DriverRepository) FindAll() ([]entity.Driver, error) {
 }
 
 func (r *DriverRepository) Update(truckDriver *entity.Driver) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = "UPDATE Driver SET Name = ?, Email = ?, LicenseNumber = ?  WHERE Id = ?"
 	_, err := r.Db.ExecContext(ctx, sql, truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber, truckDriver.ID.String())
@@ -114,7 +113,7 @@ func (r *DriverRepository) Update(truckDriver *entity.Driver) error {
 }
 
 func (r *DriverRepository) Delete(id string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	_, err := r.Db.ExecContext(ctx, "DELETE FROM Driver WHERE id = ?", id)
 	if err != nil {

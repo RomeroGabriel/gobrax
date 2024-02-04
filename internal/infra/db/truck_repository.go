@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"time"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
 )
@@ -37,7 +36,7 @@ func NewTruckRepository(db *sql.DB) *TruckRepository {
 }
 
 func (r *TruckRepository) Save(truck *entity.Truck) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `INSERT INTO Truck (
 			Id,
@@ -69,7 +68,7 @@ func (r *TruckRepository) Save(truck *entity.Truck) error {
 }
 
 func (r *TruckRepository) FindById(id string) (*entity.Truck, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `SELECT
 		Id,
@@ -101,7 +100,7 @@ func (r *TruckRepository) FindById(id string) (*entity.Truck, error) {
 }
 
 func (r *TruckRepository) FindAll() ([]entity.Truck, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `SELECT
 	id,
@@ -140,7 +139,7 @@ func (r *TruckRepository) FindAll() ([]entity.Truck, error) {
 }
 
 func (r *TruckRepository) Update(truck *entity.Truck) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	var sql = `UPDATE Truck SET ModelType = ?, LicensePlate = ? WHERE id = ?;`
 	_, err := r.Db.ExecContext(ctx, sql, truck.ModelType, truck.LicensePlate, truck.ID.String())
@@ -157,7 +156,7 @@ func (r *TruckRepository) Update(truck *entity.Truck) error {
 }
 
 func (r *TruckRepository) Delete(id string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultSecondTimeout)
 	defer cancel()
 	_, err := r.Db.ExecContext(ctx, "DELETE FROM Truck WHERE id = ?", id)
 	if err != nil {
