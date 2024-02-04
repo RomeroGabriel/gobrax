@@ -6,7 +6,7 @@ import (
 	"github.com/RomeroGabriel/gobrax-challenge/pkg/entity"
 )
 
-type TruckDriver struct {
+type Driver struct {
 	ID            entity.ID
 	Name          string
 	Email         string
@@ -19,11 +19,11 @@ var (
 	ErrLicenseNumberIsRequired = errors.New("truck driver license number is required")
 )
 
-func NewTruckDriver(name, email, licenseNumber string) (*TruckDriver, error) {
+func NewTruckDriver(name, email, licenseNumber string) (*Driver, error) {
 	// TODO: Add validations for email(eee@@@@.com), name(size), and licenseNumber(size)
 	// TODO: Create entity for LicenseNumber
 	id := entity.NewID()
-	td := &TruckDriver{
+	td := &Driver{
 		ID:            id,
 		Name:          name,
 		Email:         email,
@@ -36,7 +36,7 @@ func NewTruckDriver(name, email, licenseNumber string) (*TruckDriver, error) {
 	return td, nil
 }
 
-func (t TruckDriver) Validate() error {
+func (t Driver) Validate() error {
 	if t.ID.String() == "" {
 		return entity.ErrIDIsRequired
 	}

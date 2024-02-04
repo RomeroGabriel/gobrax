@@ -6,10 +6,10 @@ import (
 )
 
 type ITruckDriverRepository interface {
-	Save(truckDriver *entity.TruckDriver) error
-	FindById(id string) (*entity.TruckDriver, error)
-	FindAll() ([]entity.TruckDriver, error)
-	Update(truckDriver *entity.TruckDriver) error
+	Save(truckDriver *entity.Driver) error
+	FindById(id string) (*entity.Driver, error)
+	FindAll() ([]entity.Driver, error)
+	Update(truckDriver *entity.Driver) error
 	Delete(id string) error
 	// TODO: Add Find with pagination
 }
@@ -24,10 +24,10 @@ type ITruckRepository interface {
 }
 
 type IDriverTruckBindingRespository interface {
-	CreateBinding(truck entity.Truck, driver entity.TruckDriver) (*pkg.ID, error)
-	RemoveBinding(truck entity.Truck, driver entity.TruckDriver) error
+	CreateBinding(truck entity.Truck, driver entity.Driver) (*pkg.ID, error)
+	RemoveBinding(truck entity.Truck, driver entity.Driver) error
 	RemoveBindingById(id string) error
-	GetCurrentTruckOfDriver(driver entity.TruckDriver) (*entity.Truck, error)
-	DriverIsAvailable(driver entity.TruckDriver) (bool, error)
+	GetCurrentTruckOfDriver(driver entity.Driver) (*entity.Truck, error)
+	DriverIsAvailable(driver entity.Driver) (bool, error)
 	TruckIsAvailable(truck entity.Truck) (bool, error)
 }

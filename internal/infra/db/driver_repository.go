@@ -34,7 +34,7 @@ func NewTruckDriverRepository(db *sql.DB) *DriverRepository {
 	return &DriverRepository{db}
 }
 
-func (r *DriverRepository) Save(truckDriver *entity.TruckDriver) error {
+func (r *DriverRepository) Save(truckDriver *entity.Driver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	_, err := r.Db.ExecContext(ctx, "INSERT INTO Driver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
@@ -50,10 +50,10 @@ func (r *DriverRepository) Save(truckDriver *entity.TruckDriver) error {
 	}
 }
 
-func (r *DriverRepository) FindById(id string) (*entity.TruckDriver, error) {
+func (r *DriverRepository) FindById(id string) (*entity.Driver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	var result entity.TruckDriver
+	var result entity.Driver
 	var sql = "SELECT Id, Name, Email, LicenseNumber FROM Driver WHERE id = ?"
 	err := r.Db.QueryRowContext(ctx, sql, id).Scan(&result.ID, &result.Name, &result.Email, &result.LicenseNumber)
 	if err != nil {
@@ -72,16 +72,16 @@ func (r *DriverRepository) FindById(id string) (*entity.TruckDriver, error) {
 	}
 }
 
-func (r *DriverRepository) FindAll() ([]entity.TruckDriver, error) {
+func (r *DriverRepository) FindAll() ([]entity.Driver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	rows, err := r.Db.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM Driver")
 	if err != nil {
 		return nil, err
 	}
-	tAll := []entity.TruckDriver{}
+	tAll := []entity.Driver{}
 	for rows.Next() {
-		var td entity.TruckDriver
+		var td entity.Driver
 		if err := rows.Scan(&td.ID, &td.Name, &td.Email, &td.LicenseNumber); err != nil {
 			return nil, err
 		}
@@ -96,7 +96,7 @@ func (r *DriverRepository) FindAll() ([]entity.TruckDriver, error) {
 	}
 }
 
-func (r *DriverRepository) Update(truckDriver *entity.TruckDriver) error {
+func (r *DriverRepository) Update(truckDriver *entity.Driver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	var sql = "UPDATE Driver SET Name = ?, Email = ?, LicenseNumber = ?  WHERE Id = ?"

@@ -38,7 +38,7 @@ func NewDriverTruckBindingRespository(db *sql.DB) *DriverTruckBindingRespository
 	return &DriverTruckBindingRespository{db}
 }
 
-func (r *DriverTruckBindingRespository) CreateBinding(truck entity.Truck, driver entity.TruckDriver) (*pkg.ID, error) {
+func (r *DriverTruckBindingRespository) CreateBinding(truck entity.Truck, driver entity.Driver) (*pkg.ID, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
@@ -70,7 +70,7 @@ func (r *DriverTruckBindingRespository) CreateBinding(truck entity.Truck, driver
 	}
 }
 
-func (r *DriverTruckBindingRespository) RemoveBinding(truck entity.Truck, driver entity.TruckDriver) error {
+func (r *DriverTruckBindingRespository) RemoveBinding(truck entity.Truck, driver entity.Driver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	var sql = `UPDATE DriverTruckMapping SET DeletedAt = ? WHERE FkDriver = ? AND FkTruck = ? AND DeletedAt IS NULL`
@@ -108,7 +108,7 @@ func (r *DriverTruckBindingRespository) RemoveBindingById(id string) error {
 	}
 }
 
-func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.TruckDriver) (*entity.Truck, error) {
+func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.Driver) (*entity.Truck, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	var sql = `SELECT
@@ -143,7 +143,7 @@ func (r *DriverTruckBindingRespository) GetCurrentTruckOfDriver(driver entity.Tr
 	}
 }
 
-func (r *DriverTruckBindingRespository) DriverIsAvailable(driver entity.TruckDriver) (bool, error) {
+func (r *DriverTruckBindingRespository) DriverIsAvailable(driver entity.Driver) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	var count int
