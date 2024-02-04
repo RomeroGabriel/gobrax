@@ -1,4 +1,4 @@
-POST http://localhost:8080/truckdrivers HTTP/1.1
+POST http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
   "license_number": "ABC1234556-1"
 }
 
-POST http://localhost:8080/truckdrivers HTTP/1.1
+POST http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 {
@@ -16,11 +16,11 @@ Content-Type: application/json
   "license_number": "ABC1234556-2"
 }
 
-GET http://localhost:8080/truckdrivers HTTP/1.1
+GET http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 
-PUT http://localhost:8080/truckdrivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+PUT http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -29,7 +29,7 @@ Content-Type: application/json
   "license_number": "ABC1234556-UPDATE"
 }
 
-GET http://localhost:8080/truckdrivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+GET http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
 Content-Type: application/json
 
-DELETE http://localhost:8080/truckdrivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+DELETE http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1

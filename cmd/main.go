@@ -32,7 +32,7 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	r.Route("/truckdrivers", func(r chi.Router) {
+	r.Route("/drivers", func(r chi.Router) {
 		r.Post("/", webTruckDriverHandler.Create)
 		r.Get("/{id}", webTruckDriverHandler.FindById)
 		r.Get("/", webTruckDriverHandler.FindAll)
