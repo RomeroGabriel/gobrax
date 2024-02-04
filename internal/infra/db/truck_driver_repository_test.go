@@ -13,12 +13,12 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type TruckDriverRepositoryTestSuite struct {
+type DriverRepositoryTestSuite struct {
 	suite.Suite
 	Db *sql.DB
 }
 
-func (suite *TruckDriverRepositoryTestSuite) SetupSuite() {
+func (suite *DriverRepositoryTestSuite) SetupSuite() {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
 		panic(err)
@@ -26,19 +26,19 @@ func (suite *TruckDriverRepositoryTestSuite) SetupSuite() {
 	suite.Db = db
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TearDownSuite() {
+func (suite *DriverRepositoryTestSuite) TearDownSuite() {
 	suite.Db.Close()
 }
 
 func TestSuiteTruckDriver(t *testing.T) {
-	suite.Run(t, new(TruckDriverRepositoryTestSuite))
+	suite.Run(t, new(DriverRepositoryTestSuite))
 }
 
 var name = "Trucker 1"
 var email = "email1@gg.com"
 var license = "ABC12345"
 
-func (suite *TruckDriverRepositoryTestSuite) TestSaveTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestSaveTruckDriver() {
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
@@ -46,7 +46,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestSaveTruckDriver() {
 	suite.NoError(err)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestSaveDuplicateTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestSaveDuplicateTruckDriver() {
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
@@ -57,7 +57,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestSaveDuplicateTruckDriver() {
 	suite.Error(err)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestFindByIdTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriver() {
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
@@ -71,7 +71,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestFindByIdTruckDriver() {
 	suite.Equal(license, tDriverFind.LicenseNumber)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
+func (suite *DriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 	suite.NoError(err)
 	repo := NewTruckDriverRepository(suite.Db)
@@ -81,7 +81,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestFindByIdTruckDriverNotExist() {
 	suite.Nil(tDriverFind)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestFindAllTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestFindAllTruckDriver() {
 	repo := NewTruckDriverRepository(suite.Db)
 
 	for i := 0; i < 10; i++ {
@@ -98,7 +98,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestFindAllTruckDriver() {
 	suite.Equal("TruckDriver 9", tds[9].Name)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestUpdateTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestUpdateTruckDriver() {
 	repo := NewTruckDriverRepository(suite.Db)
 
 	tDriver, err := entity.NewTruckDriver(name, email, license)
@@ -118,7 +118,7 @@ func (suite *TruckDriverRepositoryTestSuite) TestUpdateTruckDriver() {
 	suite.Equal("Update License", tDriverFind.LicenseNumber)
 }
 
-func (suite *TruckDriverRepositoryTestSuite) TestDeleteTruckDriver() {
+func (suite *DriverRepositoryTestSuite) TestDeleteTruckDriver() {
 	repo := NewTruckDriverRepository(suite.Db)
 	tDriver, err := entity.NewTruckDriver(name, email, license)
 

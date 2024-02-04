@@ -9,18 +9,18 @@ import (
 	"github.com/RomeroGabriel/gobrax-challenge/internal/entity"
 )
 
-type TruckDriverRepository struct {
+type DriverRepository struct {
 	Db *sql.DB
 }
 
-var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS TruckDriver (
+var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS Driver (
     Id TEXT NOT NULL,
     Name TEXT NOT NULL,
     Email TEXT NOT NULL,
 	LicenseNumber TEXT NOT NULL,
 	PRIMARY KEY (id));`
 
-func NewTruckDriverRepository(db *sql.DB) *TruckDriverRepository {
+func NewTruckDriverRepository(db *sql.DB) *DriverRepository {
 	err := db.Ping()
 	if err != nil {
 		log.Printf("%q\n", err)
@@ -31,13 +31,13 @@ func NewTruckDriverRepository(db *sql.DB) *TruckDriverRepository {
 		log.Printf("%q: %s\n", err, schemaTruckDriver)
 		return nil
 	}
-	return &TruckDriverRepository{db}
+	return &DriverRepository{db}
 }
 
-func (r *TruckDriverRepository) Save(truckDriver *entity.TruckDriver) error {
+func (r *DriverRepository) Save(truckDriver *entity.TruckDriver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	_, err := r.Db.ExecContext(ctx, "INSERT INTO TruckDriver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
+	_, err := r.Db.ExecContext(ctx, "INSERT INTO Driver (Id, Name, Email, LicenseNumber) VALUES (?, ?, ?, ?)", truckDriver.ID.String(), truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber)
 	if err != nil {
 		return err
 	}
@@ -50,11 +50,11 @@ func (r *TruckDriverRepository) Save(truckDriver *entity.TruckDriver) error {
 	}
 }
 
-func (r *TruckDriverRepository) FindById(id string) (*entity.TruckDriver, error) {
+func (r *DriverRepository) FindById(id string) (*entity.TruckDriver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	var result entity.TruckDriver
-	var sql = "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver WHERE id = ?"
+	var sql = "SELECT Id, Name, Email, LicenseNumber FROM Driver WHERE id = ?"
 	err := r.Db.QueryRowContext(ctx, sql, id).Scan(&result.ID, &result.Name, &result.Email, &result.LicenseNumber)
 	if err != nil {
 		return nil, err
@@ -72,10 +72,10 @@ func (r *TruckDriverRepository) FindById(id string) (*entity.TruckDriver, error)
 	}
 }
 
-func (r *TruckDriverRepository) FindAll() ([]entity.TruckDriver, error) {
+func (r *DriverRepository) FindAll() ([]entity.TruckDriver, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	rows, err := r.Db.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM TruckDriver")
+	rows, err := r.Db.QueryContext(ctx, "SELECT Id, Name, Email, LicenseNumber FROM Driver")
 	if err != nil {
 		return nil, err
 	}
@@ -96,10 +96,10 @@ func (r *TruckDriverRepository) FindAll() ([]entity.TruckDriver, error) {
 	}
 }
 
-func (r *TruckDriverRepository) Update(truckDriver *entity.TruckDriver) error {
+func (r *DriverRepository) Update(truckDriver *entity.TruckDriver) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	var sql = "UPDATE TruckDriver SET Name = ?, Email = ?, LicenseNumber = ?  WHERE Id = ?"
+	var sql = "UPDATE Driver SET Name = ?, Email = ?, LicenseNumber = ?  WHERE Id = ?"
 	_, err := r.Db.ExecContext(ctx, sql, truckDriver.Name, truckDriver.Email, truckDriver.LicenseNumber, truckDriver.ID.String())
 	if err != nil {
 		return err
@@ -113,10 +113,10 @@ func (r *TruckDriverRepository) Update(truckDriver *entity.TruckDriver) error {
 	}
 }
 
-func (r *TruckDriverRepository) Delete(id string) error {
+func (r *DriverRepository) Delete(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	_, err := r.Db.ExecContext(ctx, "DELETE FROM TruckDriver WHERE id = ?", id)
+	_, err := r.Db.ExecContext(ctx, "DELETE FROM Driver WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
