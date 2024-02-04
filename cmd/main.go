@@ -30,10 +30,10 @@ func main() {
 	bindingDb := db.NewDriverTruckBindingRespository(database)
 
 	truckDriverService := service.NewDriverService(truckDriverDb, bindingDb)
-	webDriverHandler := handlers.NewWebDriverHandler(truckDriverService)
+	webDriverHandler := handlers.NewWebDriverHandler(*truckDriverService)
 
 	truckDb := db.NewTruckRepository(database)
-	truckService := service.NewTruckService(*truckDb)
+	truckService := service.NewTruckService(truckDb, bindingDb)
 	webTruckHandler := handlers.NewWebTruckHandler(truckService)
 
 	bindingService := service.NewDriverTruckBindingService(*truckDriverDb, *truckDb, *bindingDb)

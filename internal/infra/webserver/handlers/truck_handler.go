@@ -10,10 +10,10 @@ import (
 )
 
 type WebTruckHandler struct {
-	TruckService service.ITruckService
+	TruckService *service.TruckService
 }
 
-func NewWebTruckHandler(service service.ITruckService) *WebTruckHandler {
+func NewWebTruckHandler(service *service.TruckService) *WebTruckHandler {
 	return &WebTruckHandler{
 		TruckService: service,
 	}
@@ -85,7 +85,7 @@ func (h *WebTruckHandler) Update(w http.ResponseWriter, r *http.Request) {
 	data.Id = id
 	err = h.TruckService.Update(data)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

@@ -10,10 +10,10 @@ import (
 )
 
 type DriverTruckBindingHandler struct {
-	bindingService service.IDriverTruckBindingService
+	bindingService *service.DriverTruckBindingService
 }
 
-func NewDriverTruckBindingHandler(service service.IDriverTruckBindingService) *DriverTruckBindingHandler {
+func NewDriverTruckBindingHandler(service *service.DriverTruckBindingService) *DriverTruckBindingHandler {
 	return &DriverTruckBindingHandler{
 		bindingService: service,
 	}

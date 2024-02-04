@@ -10,10 +10,10 @@ import (
 )
 
 type WebDriverHandler struct {
-	DriverService service.IDriverService
+	DriverService service.DriverService
 }
 
-func NewWebDriverHandler(service service.IDriverService) *WebDriverHandler {
+func NewWebDriverHandler(service service.DriverService) *WebDriverHandler {
 	return &WebDriverHandler{
 		DriverService: service,
 	}

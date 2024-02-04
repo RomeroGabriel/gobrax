@@ -23,15 +23,15 @@ Content-Type: application/json
 GET http://localhost:8080/trucks HTTP/1.1
 Content-Type: application/json
 
-PUT http://localhost:8080/trucks/c0e3e1ac-ed0c-42c5-b2b6-ad89f0e0b493 HTTP/1.1
+PUT http://localhost:8080/trucks/b5ebb3a0-d9d8-4895-996a-206a59086595 HTTP/1.1
 Content-Type: application/json
 
 {
   "model_type": "Truck UPDATE",
-  "license_plate": "TRUCK1234556-UPDATE",
+  "license_plate": "TRUCK1234556-UPDATE"
 }
 
-GET http://localhost:8080/trucks/c0e3e1ac-ed0c-42c5-b2b6-ad89f0e0b493 HTTP/1.1
+GET http://localhost:8080/trucks/b5ebb3a0-d9d8-4895-996a-206a59086595 HTTP/1.1
 Content-Type: application/json
 
-DELETE http://localhost:8080/trucks/c0e3e1ac-ed0c-42c5-b2b6-ad89f0e0b493 HTTP/1.1
+DELETE http://localhost:8080/trucks/b5ebb3a0-d9d8-4895-996a-206a59086595 HTTP/1.1

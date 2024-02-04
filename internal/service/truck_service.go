@@ -1,6 +1,7 @@
 package service
 
 import (
+	"database/sql"
 	"errors"
 
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto"
@@ -9,17 +10,20 @@ import (
 )
 
 type TruckService struct {
-	TruckDB db.TruckRepository
+	truckDb            *db.TruckRepository
+	bindingDriverTruck *db.DriverTruckBindingRespository
 }
 
-func NewTruckService(db db.TruckRepository) *TruckService {
+func NewTruckService(db *db.TruckRepository, bindingDriverTruck *db.DriverTruckBindingRespository) *TruckService {
 	return &TruckService{
-		TruckDB: db,
+		truckDb:            db,
+		bindingDriverTruck: bindingDriverTruck,
 	}
 }
 
 var (
-	ErrTruckNotFound = errors.New("truck not found")
+	ErrTruckNotFound  = errors.New("truck not found")
+	ErrTruckHasDriver = errors.New("truck has linked driver")
 )
 
 func (t *TruckService) CreateTruck(input dto.CreateTruckDTO) (*dto.TruckResponseDTO, error) {
@@ -27,7 +31,7 @@ func (t *TruckService) CreateTruck(input dto.CreateTruckDTO) (*dto.TruckResponse
 	if err != nil {
 		return nil, err
 	}
-	err = t.TruckDB.Save(tdEntity)
+	err = t.truckDb.Save(tdEntity)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +39,7 @@ func (t *TruckService) CreateTruck(input dto.CreateTruckDTO) (*dto.TruckResponse
 }
 
 func (t *TruckService) FindByIdTruck(id string) (*dto.TruckResponseDTO, error) {
-	tdEntity, err := t.TruckDB.FindById(id)
+	tdEntity, err := t.truckDb.FindById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +47,7 @@ func (t *TruckService) FindByIdTruck(id string) (*dto.TruckResponseDTO, error) {
 }
 
 func (t *TruckService) FindByAll() ([]dto.TruckResponseDTO, error) {
-	data, err := t.TruckDB.FindAll()
+	data, err := t.truckDb.FindAll()
 	if err != nil {
 		return nil, err
 	}
@@ -55,21 +59,33 @@ func (t *TruckService) FindByAll() ([]dto.TruckResponseDTO, error) {
 }
 
 func (t *TruckService) Update(input dto.UpdateTruckDTO) error {
-	tdEntity, err := t.TruckDB.FindById(input.Id)
+	tdEntity, err := t.truckDb.FindById(input.Id)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return ErrTruckNotFound
+		}
 		return ErrTruckNotFound
 	}
 	tdEntity.ModelType = input.ModelType
 	tdEntity.LicensePlate = input.LicensePlate
-	return t.TruckDB.Update(tdEntity)
+	return t.truckDb.Update(tdEntity)
 }
 
 func (t *TruckService) Delete(id string) (*dto.TruckResponseDTO, error) {
-	tdEntity, err := t.TruckDB.FindById(id)
+	tdEntity, err := t.truckDb.FindById(id)
 	if err != nil {
-		return nil, ErrTruckNotFound
+		if err == sql.ErrNoRows {
+			return nil, ErrDriverNotFound
+		}
+		return nil, ErrDriverNotFound
 	}
-	err = t.TruckDB.Delete(id)
+
+	isAvailable, err := t.bindingDriverTruck.TruckIsAvailable(*tdEntity)
+	if !isAvailable {
+		return nil, ErrTruckHasDriver
+	}
+
+	err = t.truckDb.Delete(id)
 	if err != nil {
 		return nil, err
 	}

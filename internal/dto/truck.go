@@ -21,5 +21,4 @@ type UpdateTruckDTO struct {
 	Id           string `json:"id"`
 	ModelType    string `json:"model_type"`
 	LicensePlate string `json:"license_plate"`
-	// TODO: Add Status
 }
