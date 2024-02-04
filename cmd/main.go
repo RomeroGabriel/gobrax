@@ -36,7 +36,7 @@ func main() {
 	truckService := service.NewTruckService(truckDb, bindingDb)
 	webTruckHandler := handlers.NewWebTruckHandler(truckService)
 
-	bindingService := service.NewDriverTruckBindingService(*truckDriverDb, *truckDb, *bindingDb)
+	bindingService := service.NewDriverTruckBindingService(truckDriverDb, truckDb, bindingDb)
 	bindingHandler := handlers.NewDriverTruckBindingHandler(bindingService)
 
 	r := chi.NewRouter()

@@ -14,40 +14,39 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type DriverServiceTestSuite struct {
+type TruckServiceTestSuite struct {
 	suite.Suite
-	driverDB   *db.DriverRepository
+	truckDb    *db.TruckRepository
 	dbInstance *sql.DB
 }
 
-func (suite *DriverServiceTestSuite) SetupSuite() {
+func (suite *TruckServiceTestSuite) SetupSuite() {
 	dbInstance, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
 		panic(err)
 	}
-	driverDB := db.NewDriverRepository(dbInstance)
-	suite.driverDB = driverDB
+	truckDb := db.NewTruckRepository(dbInstance)
+	suite.truckDb = truckDb
 	suite.dbInstance = dbInstance
 }
 
-func TestSuiteDriverService(t *testing.T) {
-	suite.Run(t, new(DriverServiceTestSuite))
+func TestSuiteTruckervice(t *testing.T) {
+	suite.Run(t, new(TruckServiceTestSuite))
 }
 
-func (suite *DriverServiceTestSuite) TestDeleteDriverWhenTruckIsLinked() {
-	truckDB := db.NewTruckRepository(suite.dbInstance)
-	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
-
+func (suite *TruckServiceTestSuite) TestDeleteDriverWhenTruckIsLinked() {
+	driverDB := db.NewDriverRepository(suite.dbInstance)
 	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
-	err = suite.driverDB.Save(td)
+	err = driverDB.Save(td)
 	suite.NoError(err)
 
 	t, err := entity.NewTruck(modelType, manufacturer, licensePlate, fuelType, year)
-	err = truckDB.Save(t)
+	err = suite.truckDb.Save(t)
 	suite.NoError(err)
 
-	serviceBinding := NewDriverTruckBindingService(suite.driverDB, truckDB, driverTruckBindingDB)
+	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
+	serviceBinding := NewDriverTruckBindingService(driverDB, suite.truckDb, driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -56,8 +55,8 @@ func (suite *DriverServiceTestSuite) TestDeleteDriverWhenTruckIsLinked() {
 	suite.NoError(err)
 	suite.NotNil(id)
 
-	service := NewDriverService(suite.driverDB, driverTruckBindingDB)
-	_, err = service.Delete(td.ID.String())
+	service := NewTruckService(suite.truckDb, driverTruckBindingDB)
+	_, err = service.Delete(t.ID.String())
 	suite.Error(err)
-	suite.Equal(ErrDriverHasTruck, err)
+	suite.Equal(ErrTruckHasDriver, err)
 }

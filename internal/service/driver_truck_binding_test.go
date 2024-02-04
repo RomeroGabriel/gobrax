@@ -57,7 +57,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruck() {
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
+	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -81,7 +81,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingTruckAndDriverToTruc
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
+	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -107,7 +107,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruckNotAvai
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
+	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),
@@ -142,7 +142,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestTruckIsNotAvailable() {
 	err = truckDB.Save(t)
 	suite.NoError(err)
 
-	service := NewDriverTruckBindingService(*truckDriverDB, *truckDB, *driverTruckBindingDB)
+	service := NewDriverTruckBindingService(truckDriverDB, truckDB, driverTruckBindingDB)
 	var input = dto.CreateBindingDTO{
 		IdDriver: td.ID.String(),
 		IdTruck:  t.ID.String(),

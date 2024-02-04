@@ -75,9 +75,9 @@ func (t *TruckService) Delete(id string) (*dto.TruckResponseDTO, error) {
 	tdEntity, err := t.truckDb.FindById(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, ErrDriverNotFound
+			return nil, ErrTruckNotFound
 		}
-		return nil, ErrDriverNotFound
+		return nil, err
 	}
 
 	isAvailable, err := t.bindingDriverTruck.TruckIsAvailable(*tdEntity)
