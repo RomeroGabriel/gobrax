@@ -20,8 +20,9 @@ RUN rm -rf /app
 
 # Copy the binary from the builder stage
 COPY --from=builder /app/gobrax-api .
+COPY .env .
 
-# # Expose the application on a specific port
+# Expose the application on a specific port
 EXPOSE 8080
 
 # # Command to run the application
