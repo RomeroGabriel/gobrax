@@ -2,9 +2,10 @@ package service
 
 import (
 	"github.com/RomeroGabriel/gobrax-challenge/internal/dto"
+	pkg "github.com/RomeroGabriel/gobrax-challenge/pkg/entity"
 )
 
-type TruckDriverServiceInterface interface {
+type ITruckDriverService interface {
 	CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error)
 	FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error)
 	FindByAll() ([]dto.DriverResponseDTO, error)
@@ -12,10 +13,14 @@ type TruckDriverServiceInterface interface {
 	Delete(id string) (*dto.DriverResponseDTO, error)
 }
 
-type TruckServiceInterface interface {
+type ITruckService interface {
 	CreateTruck(input dto.CreateTruckDTO) (*dto.TruckResponseDTO, error)
 	FindByIdTruck(id string) (*dto.TruckResponseDTO, error)
 	FindByAll() ([]dto.TruckResponseDTO, error)
 	Update(input dto.UpdateTruckDTO) error
 	Delete(id string) (*dto.TruckResponseDTO, error)
+}
+
+type IDriverTruckBindingService interface {
+	BindingDriverToTruck(input dto.CreateBindingDTO) (*pkg.ID, error)
 }

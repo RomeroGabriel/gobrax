@@ -10,10 +10,10 @@ import (
 )
 
 type WebTruckDriverHandler struct {
-	TruckDriverService service.TruckDriverServiceInterface
+	TruckDriverService service.ITruckDriverService
 }
 
-func NewWebTruckDriverHandler(service service.TruckDriverServiceInterface) *WebTruckDriverHandler {
+func NewWebTruckDriverHandler(service service.ITruckDriverService) *WebTruckDriverHandler {
 	return &WebTruckDriverHandler{
 		TruckDriverService: service,
 	}

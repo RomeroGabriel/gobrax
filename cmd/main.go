@@ -29,6 +29,10 @@ func main() {
 	truckService := service.NewTruckService(truckDb)
 	webTruckHandler := handlers.NewWebTruckHandler(truckService)
 
+	bindingDb := db.NewDriverTruckBindingRespository(database)
+	bindingService := service.NewDriverTruckBindingService(truckDriverDb, truckDb, bindingDb)
+	bindingHandler := handlers.NewDriverTruckBindingHandler(bindingService)
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -46,6 +50,10 @@ func main() {
 		r.Get("/", webTruckHandler.FindAll)
 		r.Put("/{id}", webTruckHandler.Update)
 		r.Delete("/{id}", webTruckHandler.Delete)
+	})
+
+	r.Route("/drivers-trucks", func(r chi.Router) {
+		r.Post("/", bindingHandler.CreateBinding)
 	})
 
 	fmt.Println("Starting web server on port :8080")

@@ -10,10 +10,10 @@ import (
 )
 
 type WebTruckHandler struct {
-	TruckService service.TruckServiceInterface
+	TruckService service.ITruckService
 }
 
-func NewWebTruckHandler(service service.TruckServiceInterface) *WebTruckHandler {
+func NewWebTruckHandler(service service.ITruckService) *WebTruckHandler {
 	return &WebTruckHandler{
 		TruckService: service,
 	}
