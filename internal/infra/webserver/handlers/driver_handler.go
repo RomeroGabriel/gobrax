@@ -9,17 +9,17 @@ import (
 	"github.com/go-chi/chi"
 )
 
-type WebTruckDriverHandler struct {
+type WebDriverHandler struct {
 	DriverService service.IDriverService
 }
 
-func NewWebTruckDriverHandler(service service.IDriverService) *WebTruckDriverHandler {
-	return &WebTruckDriverHandler{
+func NewWebDriverHandler(service service.IDriverService) *WebDriverHandler {
+	return &WebDriverHandler{
 		DriverService: service,
 	}
 }
 
-func (h *WebTruckDriverHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *WebDriverHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var data dto.CreateDriverDTO
 	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
@@ -27,7 +27,7 @@ func (h *WebTruckDriverHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseData, err := h.DriverService.CreateTruckDriver(data)
+	responseData, err := h.DriverService.CreateDriver(data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -39,13 +39,13 @@ func (h *WebTruckDriverHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *WebTruckDriverHandler) FindById(w http.ResponseWriter, r *http.Request) {
+func (h *WebDriverHandler) FindById(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	responseData, err := h.DriverService.FindByIdTruckDriver(id)
+	responseData, err := h.DriverService.FindById(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -57,8 +57,8 @@ func (h *WebTruckDriverHandler) FindById(w http.ResponseWriter, r *http.Request)
 	}
 }
 
-func (h *WebTruckDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) {
-	responseData, err := h.DriverService.FindByAll()
+func (h *WebDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) {
+	responseData, err := h.DriverService.FindAll()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -70,7 +70,7 @@ func (h *WebTruckDriverHandler) FindAll(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
+func (h *WebDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
 	var data dto.UpdateDriverDTO
 	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
@@ -91,7 +91,7 @@ func (h *WebTruckDriverHandler) Update(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *WebTruckDriverHandler) Delete(w http.ResponseWriter, r *http.Request) {
+func (h *WebDriverHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)

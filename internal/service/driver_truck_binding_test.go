@@ -48,7 +48,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruck() {
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
-	td, err := entity.NewTruckDriver(name, email, license)
+	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
 	err = truckDriverDB.Save(td)
 	suite.NoError(err)
@@ -72,7 +72,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingTruckAndDriverToTruc
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
-	td, err := entity.NewTruckDriver(name, email, license)
+	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
 	err = truckDriverDB.Save(td)
 	suite.NoError(err)
@@ -98,7 +98,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestBindingDriverToTruckNotAvai
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
-	td, err := entity.NewTruckDriver(name, email, license)
+	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
 	err = truckDriverDB.Save(td)
 	suite.NoError(err)
@@ -133,7 +133,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestTruckIsNotAvailable() {
 	truckDB := db.NewTruckRepository(suite.dbInstance)
 	driverTruckBindingDB := db.NewDriverTruckBindingRespository(suite.dbInstance)
 
-	td, err := entity.NewTruckDriver(name, email, license)
+	td, err := entity.NewDriver(name, email, license)
 	suite.NoError(err)
 	err = truckDriverDB.Save(td)
 	suite.NoError(err)
@@ -150,7 +150,7 @@ func (suite *DriverTruckBindingServiceTestSuite) TestTruckIsNotAvailable() {
 	_, err = service.BindingDriverToTruck(input)
 	suite.NoError(err)
 
-	td, err = entity.NewTruckDriver(name, email, license)
+	td, err = entity.NewDriver(name, email, license)
 	err = truckDriverDB.Save(td)
 	suite.NoError(err)
 	input = dto.CreateBindingDTO{

@@ -19,7 +19,7 @@ var (
 	ErrLicenseNumberIsRequired = errors.New("truck driver license number is required")
 )
 
-func NewTruckDriver(name, email, licenseNumber string) (*Driver, error) {
+func NewDriver(name, email, licenseNumber string) (*Driver, error) {
 	// TODO: Add validations for email(eee@@@@.com), name(size), and licenseNumber(size)
 	// TODO: Create entity for LicenseNumber
 	id := entity.NewID()

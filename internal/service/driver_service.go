@@ -22,8 +22,8 @@ var (
 	ErrDriverNotFound = errors.New("driver not found")
 )
 
-func (t *DriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error) {
-	tdEntity, err := parsers.CreateTruckDriverDTOToEntity(input)
+func (t *DriverService) CreateDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error) {
+	tdEntity, err := parsers.CreateDriverDTOToEntity(input)
 	if err != nil {
 		return nil, err
 	}
@@ -38,28 +38,28 @@ func (t *DriverService) CreateTruckDriver(input dto.CreateDriverDTO) (*dto.Drive
 	}, err
 }
 
-func (t *DriverService) FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error) {
+func (t *DriverService) FindById(id string) (*dto.DriverResponseDTO, error) {
 	tdEntity, err := t.TruckDriverDB.FindById(id)
 	if err != nil {
 		return nil, err
 	}
-	return parsers.EntityToTruckDriverDTO(*tdEntity), err
+	return parsers.EntityToDriverDTO(*tdEntity), err
 }
 
-func (t *DriverService) FindByAll() ([]dto.DriverResponseDTO, error) {
+func (t *DriverService) FindAll() ([]dto.DriverResponseDTO, error) {
 	data, err := t.TruckDriverDB.FindAll()
 	if err != nil {
 		return nil, err
 	}
 	result := []dto.DriverResponseDTO{}
 	for _, v := range data {
-		result = append(result, *parsers.EntityToTruckDriverDTO(v))
+		result = append(result, *parsers.EntityToDriverDTO(v))
 	}
 	return result, err
 }
 
 func (t *DriverService) Update(input dto.UpdateDriverDTO) error {
-	tdEntity, err := parsers.UpdateTruckDriverDTOToEntity(input)
+	tdEntity, err := parsers.UpdateDriverDTOToEntity(input)
 	if err != nil {
 		return err
 	}

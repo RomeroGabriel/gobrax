@@ -11,7 +11,7 @@ var email = "email1@gg.com"
 var licenseNumber = "ABC12345"
 
 func TestNewTruckDriver(t *testing.T) {
-	td, err := NewTruckDriver(name, email, licenseNumber)
+	td, err := NewDriver(name, email, licenseNumber)
 	assert.Nil(t, err)
 	assert.NotNil(t, td)
 	assert.Equal(t, name, td.Name)
@@ -20,19 +20,19 @@ func TestNewTruckDriver(t *testing.T) {
 }
 
 func TestTruckDriverWhenNameIsRequired(t *testing.T) {
-	p, err := NewTruckDriver("", email, licenseNumber)
+	p, err := NewDriver("", email, licenseNumber)
 	assert.Nil(t, p)
 	assert.Equal(t, ErrNameIsRequired, err)
 }
 
 func TestTruckDriverWhenEmailIsRequired(t *testing.T) {
-	p, err := NewTruckDriver(name, "", licenseNumber)
+	p, err := NewDriver(name, "", licenseNumber)
 	assert.Nil(t, p)
 	assert.Equal(t, ErrEmailIsRequired, err)
 }
 
 func TestTruckDriverWhenLicenseIsRequired(t *testing.T) {
-	p, err := NewTruckDriver(name, email, "")
+	p, err := NewDriver(name, email, "")
 	assert.Nil(t, p)
 	assert.Equal(t, ErrLicenseNumberIsRequired, err)
 }

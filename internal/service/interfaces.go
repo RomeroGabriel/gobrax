@@ -6,9 +6,9 @@ import (
 )
 
 type IDriverService interface {
-	CreateTruckDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error)
-	FindByIdTruckDriver(id string) (*dto.DriverResponseDTO, error)
-	FindByAll() ([]dto.DriverResponseDTO, error)
+	CreateDriver(input dto.CreateDriverDTO) (*dto.DriverResponseDTO, error)
+	FindById(id string) (*dto.DriverResponseDTO, error)
+	FindAll() ([]dto.DriverResponseDTO, error)
 	Update(input dto.UpdateDriverDTO) error
 	Delete(id string) (*dto.DriverResponseDTO, error)
 }

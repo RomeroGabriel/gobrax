@@ -2,7 +2,7 @@ POST http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Truck Driver 1",
+  "name": "Driver 1",
   "email": "ggg@g.com",
   "license_number": "ABC1234556-1"
 }
@@ -11,7 +11,7 @@ POST http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Truck Driver 2",
+  "name": "Driver 2",
   "email": "ggg2222@g.com",
   "license_number": "ABC1234556-2"
 }
@@ -20,16 +20,16 @@ GET http://localhost:8080/drivers HTTP/1.1
 Content-Type: application/json
 
 
-PUT http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+PUT http://localhost:8080/drivers/4f9338f6-fbe0-429d-9d56-68a53db880ce HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Truck Driver UPDATE",
+  "name": "Driver UPDATE",
   "email": "gggUPDATE@g.com",
   "license_number": "ABC1234556-UPDATE"
 }
 
-GET http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+GET http://localhost:8080/drivers/4f9338f6-fbe0-429d-9d56-68a53db880ce HTTP/1.1
 Content-Type: application/json
 
-DELETE http://localhost:8080/drivers/d7388c66-7d71-4c25-a4fa-94717347b1e8 HTTP/1.1
+DELETE http://localhost:8080/drivers/4f9338f6-fbe0-429d-9d56-68a53db880ce HTTP/1.1

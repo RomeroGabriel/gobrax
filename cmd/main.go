@@ -23,7 +23,7 @@ func main() {
 
 	truckDriverDb := db.NewTruckDriverRepository(database)
 	truckDriverService := service.NewTruckDriverService(truckDriverDb)
-	webTruckDriverHandler := handlers.NewWebTruckDriverHandler(truckDriverService)
+	webDriverHandler := handlers.NewWebDriverHandler(truckDriverService)
 
 	truckDb := db.NewTruckRepository(database)
 	truckService := service.NewTruckService(truckDb)
@@ -37,11 +37,11 @@ func main() {
 	r.Use(middleware.Logger)
 
 	r.Route("/drivers", func(r chi.Router) {
-		r.Post("/", webTruckDriverHandler.Create)
-		r.Get("/{id}", webTruckDriverHandler.FindById)
-		r.Get("/", webTruckDriverHandler.FindAll)
-		r.Put("/{id}", webTruckDriverHandler.Update)
-		r.Delete("/{id}", webTruckDriverHandler.Delete)
+		r.Post("/", webDriverHandler.Create)
+		r.Get("/{id}", webDriverHandler.FindById)
+		r.Get("/", webDriverHandler.FindAll)
+		r.Put("/{id}", webDriverHandler.Update)
+		r.Delete("/{id}", webDriverHandler.Delete)
 	})
 
 	r.Route("/trucks", func(r chi.Router) {
