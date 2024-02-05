@@ -15,9 +15,9 @@ type DriverTruckBindingRespository struct {
 }
 
 var schemaDriverTruckBinding = `CREATE TABLE IF NOT EXISTS DriverTruckMapping (
-    Id TEXT NOT NULL,
-    FkDriver TEXT NOT NULL,
-    FkTruck TEXT NOT NULL,
+    Id VARCHAR(255) NOT NULL,
+    FkDriver VARCHAR(255) NOT NULL,
+    FkTruck VARCHAR(255) NOT NULL,
 	CreatedAt TEXT NOT NULL,
 	DeletedAt TEXT,
 	PRIMARY KEY (id),

@@ -12,7 +12,9 @@ import (
 	"github.com/RomeroGabriel/gobrax-challenge/internal/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	_ "github.com/mattn/go-sqlite3"
+
+	// mysql
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -61,8 +63,8 @@ func main() {
 		r.Post("/truck/{idtruck}/driver/{iddriver}", bindingHandler.CreateBinding)
 	})
 
-	fmt.Println("Starting web server on port :8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	fmt.Println("Starting web server on port :", configs.WebServerPort)
+	if err := http.ListenAndServe(configs.WebServerPort, r); err != nil {
 		log.Fatal(err)
 	}
 }

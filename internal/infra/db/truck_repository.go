@@ -13,7 +13,7 @@ type TruckRepository struct {
 }
 
 var schemaTruck = `CREATE TABLE IF NOT EXISTS Truck (
-    Id TEXT NOT NULL,
+    Id VARCHAR(255) NOT NULL,
     ModelType TEXT NOT NULL,
     Year INTEGER NOT NULL,
 	Manufacturer TEXT NOT NULL,

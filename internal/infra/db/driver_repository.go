@@ -13,7 +13,7 @@ type DriverRepository struct {
 }
 
 var schemaTruckDriver = `CREATE TABLE IF NOT EXISTS Driver (
-    Id TEXT NOT NULL,
+    Id VARCHAR(255) NOT NULL,
     Name TEXT NOT NULL,
     Email TEXT NOT NULL,
 	LicenseNumber TEXT NOT NULL,
