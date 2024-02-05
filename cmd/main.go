@@ -15,6 +15,8 @@ import (
 
 	// mysql
 	_ "github.com/go-sql-driver/mysql"
+	// sqlite
+	// _ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -29,12 +31,12 @@ func main() {
 	defer database.Close()
 
 	truckDriverDb := db.NewDriverRepository(database)
+	truckDb := db.NewTruckRepository(database)
 	bindingDb := db.NewDriverTruckBindingRespository(database)
 
 	truckDriverService := service.NewDriverService(truckDriverDb, bindingDb)
 	webDriverHandler := handlers.NewWebDriverHandler(*truckDriverService)
 
-	truckDb := db.NewTruckRepository(database)
 	truckService := service.NewTruckService(truckDb, bindingDb)
 	webTruckHandler := handlers.NewWebTruckHandler(truckService)
 
@@ -63,7 +65,7 @@ func main() {
 		r.Post("/truck/{idtruck}/driver/{iddriver}", bindingHandler.CreateBinding)
 	})
 
-	fmt.Println("Starting web server on port :", configs.WebServerPort)
+	fmt.Println("Starting web server on port ", configs.WebServerPort)
 	if err := http.ListenAndServe(configs.WebServerPort, r); err != nil {
 		log.Fatal(err)
 	}
